@@ -108,7 +108,7 @@ class UkmOrmawaController extends Controller
         $item = UkmOrmawa::where('slug', $slug)
                         ->firstOrFail();
 
-        return view('ukm-ormawa.show', compact('item'));
+        return view('show', compact('item'));
     }
 
     /**
