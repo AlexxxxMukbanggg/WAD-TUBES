@@ -13,10 +13,10 @@ class UkmOrmawa extends Model
 
     protected $fillable = [
         'user_id',
-        'name',
+        'nama',
         'slug',
-        'type',
-        'category',
+        'tipe',
+        'kategori',
         'deskripsi',
         'visi',
         'misi', 
@@ -24,6 +24,15 @@ class UkmOrmawa extends Model
         'kontak_email',
         'logo_url',
         'banner_url',
+        'id_provinsi',
+        'nama_provinsi',
+        'id_kabkota',
+        'nama_kabkota',
+        'id_kecamatan',
+        'nama_kecamatan',
+        'id_keldesa',
+        'nama_keldesa',
+        'alamat_jalan',
     ];
 
     protected $casts = [

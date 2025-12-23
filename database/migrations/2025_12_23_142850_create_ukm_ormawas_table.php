@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('ukm_ormawas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade');
-            $table->string('name')->unique();
+            $table->string('nama')->unique();
             $table->string('slug')->unique();
-            $table->enum('type', ['UKM', 'Ormawa']);
-            $table->enum('category', ['Kesenian & Budaya', 'Olahraga', 'Penalaran', 'Kerohanian', 'Sosial']);
+            $table->enum('tipe', ['UKM', 'Ormawa']);
+            $table->enum('kategori', ['Kesenian & Budaya', 'Olahraga', 'Penalaran', 'Kerohanian', 'Sosial']);
             $table->text('deskripsi')->nullable();
             $table->text('visi')->nullable();
             $table->json('misi')->nullable();
@@ -25,6 +25,15 @@ return new class extends Migration
             $table->string('kontak_instagram')->nullable();
             $table->string('logo_url')->nullable();
             $table->string('banner_url')->nullable();
+            $table->char('id_provinsi', 2)->nullable(); // ID Provinsi
+            $table->string('nama_provinsi')->nullable(); // Nama Provinsi
+            $table->char('id_kabkota', 4)->nullable(); // ID Kab/Kota
+            $table->string('nama_kabkota')->nullable(); // Nama Kab/Kota
+            $table->char('id_kecamatan', 7)->nullable(); // ID Kecamatan
+            $table->string('nama_kecamatan')->nullable(); // Nama Kecamatan
+            $table->char('id_keldesa', 10)->nullable(); // ID Kelurahan/Desa
+            $table->string('nama_keldesa')->nullable(); // Nama Kelurahan/Desa
+            $table->text('alamat_jalan')->nullable(); // Alamat Jalan, RT/RW
             $table->timestamps();
         });
     }

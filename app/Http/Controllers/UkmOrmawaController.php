@@ -52,20 +52,29 @@ class UkmOrmawaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:ukm_ormawas,name',
-            'type' => 'required|in:UKM,Ormawa',
-            'category' => 'required|in:Kesenian & Budaya,Olahraga,Penalaran,Kerohanian,Sosial',
-            'deskripsi' => 'nullable|string|max:5000',
-            'visi' => 'nullable|string',
-            'misi' => 'nullable|string',
-            'kontak_email' => 'nullable|email|max:255',
-            'kontak_instagram' => 'nullable|string|max:255',
-            'logo_url' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
-            'banner_url' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+            'nama' => 'required|string|max:255|unique:ukm_ormawas,nama',
+            'tipe' => 'required|in:UKM,Ormawa',
+            'kategori' => 'required|in:Kesenian & Budaya,Olahraga,Penalaran,Kerohanian,Sosial',
+            'deskripsi' => 'required|string|max:5000',
+            'visi' => 'required|string',
+            'misi' => 'required|string',
+            'kontak_email' => 'required|email|max:255',
+            'kontak_instagram' => 'required|string|max:255',
+            'logo_url' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
+            'banner_url' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+            'id_provinsi' => 'nullable|string',
+            'nama_provinsi' => 'nullable|string',
+            'id_kabkota' => 'nullable|string',
+            'nama_kabkota' => 'nullable|string',
+            'id_kecamatan' => 'nullable|string',
+            'nama_kecamatan' => 'nullable|string',
+            'id_keldesa' => 'nullable|string',
+            'nama_keldesa' => 'nullable|string',
+            'alamat_jalan' => 'nullable|string|max:500',
         ]);
 
         $dataToCreate = $validated;
-        $dataToCreate['slug'] = Str::slug($validated['name']);
+        $dataToCreate['slug'] = Str::slug($validated['nama']);
         $dataToCreate['user_id'] = Auth::id();
 
         if ($request->hasFile('logo_url')) {
@@ -83,7 +92,6 @@ class UkmOrmawaController extends Controller
             $dataToCreate['misi'] = [];
         }
 
-        // Hapus field sementara
         unset($dataToCreate['misi'], $dataToCreate['logo_url'], $dataToCreate['banner_url']);
 
         Auth::user()->createdUkmOrmawa->create($dataToCreate);
@@ -121,21 +129,30 @@ class UkmOrmawaController extends Controller
         $ukmOrmawa = Auth::user()->createdUkmOrmawa->firstOrFail();
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:ukm_ormawas,name,' . $ukmOrmawa->id,
-            'type' => 'required|in:UKM,Ormawa',
-            'category' => 'required|in:Kesenian & Budaya,Olahraga,Penalaran,Kerohanian,Sosial',
-            'deskripsi' => 'nullable|string|max:5000',
-            'visi' => 'nullable|string',
-            'misi' => 'nullable|string',
-            'kontak_email' => 'nullable|email|max:255',
-            'kontak_instagram' => 'nullable|string|max:255',
-            'logo_url' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
-            'banner_url' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+            'nama' => 'required|string|max:255|unique:ukm_ormawas,nama,' . $ukmOrmawa->id,
+            'tipe' => 'required|in:UKM,Ormawa',
+            'kategori' => 'required|in:Kesenian & Budaya,Olahraga,Penalaran,Kerohanian,Sosial',
+            'deskripsi' => 'required|string|max:5000',
+            'visi' => 'required|string',
+            'misi' => 'required|string',
+            'kontak_email' => 'required|email|max:255',
+            'kontak_instagram' => 'required|string|max:255',
+            'logo_url' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
+            'banner_url' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+            'id_provinsi' => 'nullable|string',
+            'nama_provinsi' => 'nullable|string',
+            'id_kabkota' => 'nullable|string',
+            'nama_kabkota' => 'nullable|string',
+            'id_kecamatan' => 'nullable|string',
+            'nama_kecamatan' => 'nullable|string',
+            'id_keldesa' => 'nullable|string',
+            'nama_keldesa' => 'nullable|string',
+            'alamat_jalan' => 'nullable|string|max:500',
         ]);
 
         $dataToUpdate = $validated;
 
-        $dataToUpdate['slug'] = Str::slug($validated['name']);
+        $dataToUpdate['slug'] = Str::slug($validated['nama']);
 
         if ($request->hasFile('logo_url')) {
             if ($ukmOrmawa->logo_url && Storage::disk('public')->exists($ukmOrmawa->logo_url)) {
