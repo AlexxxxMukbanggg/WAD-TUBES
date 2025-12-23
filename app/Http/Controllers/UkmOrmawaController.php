@@ -33,7 +33,7 @@ class UkmOrmawaController extends Controller
     $ukmOrmawas = $query->orderBy('nama')->paginate(9);
 
     
-    return view('frontend.index', compact('ukmOrmawas'));
+    return view('index', compact('ukmOrmawas'));
     }
 
     /**
@@ -44,7 +44,7 @@ class UkmOrmawaController extends Controller
         if (Auth::user()->createdUkmOrmawa) {
             return redirect()->route('pengelola.ukm-ormawa.edit')->with('info', 'Anda sudah mengelola UKM/Ormawa. Silakan edit data yang sudah ada.');
         }
-        return view('pengelola.ukm-ormawa.create');
+        return view('pengelola.create');
     }
 
     /**
@@ -119,7 +119,7 @@ class UkmOrmawaController extends Controller
         
         $ukmOrmawa = Auth::user()->createdUkmOrmawa->firstOrFail();
         
-        return view('pengelola.ukm-ormawa.edit', compact('ukmOrmawa'));
+        return view('pengelola.edit', compact('ukmOrmawa'));
     }
 
     /**

@@ -97,8 +97,22 @@
             </div>
         </div>
         @empty
-        <div class="col-12 text-center py-5">
-            <h4 class="text-muted">Tidak ada data ditemukan.</h4>
+        <div class="col-12">
+            <div class="d-flex flex-column justify-content-center align-items-center text-center w-100" style="min-height: 60vh;">
+                
+                <div class="mb-3 text-secondary opacity-25">
+                    <i class="bi bi-search" style="font-size: 5rem;"></i>
+                </div>
+
+                <h4 class="fw-bold text-secondary">Tidak ada data ditemukan</h4>
+                <p class="text-muted mb-4" style="max-width: 400px;">
+                    Kami tidak dapat menemukan UKM atau Ormawa yang cocok dengan pencarian atau filter Anda.
+                </p>
+
+                <a href="{{ route('ukm-ormawa.index') }}" class="btn btn-outline-primary rounded-pill px-4 py-2">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> Reset Pencarian
+                </a>
+            </div>
         </div>
         @endforelse
     </div>

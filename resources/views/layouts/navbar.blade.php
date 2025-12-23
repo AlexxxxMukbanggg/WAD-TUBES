@@ -1,10 +1,12 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-md navbar-light bg-white sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/Dashboard') }}">
             <img src="{{ asset('images/737px-Logo_Telkom_University_potrait.png') }}" 
-                alt="Telkom University" 
-                height="40" 
-                class="d-inline-block align-text-top">
+                 alt="Telkom University" 
+                 height="40">
+            <span class="d-none d-lg-block text-secondary small border-start ps-2 ms-1" style="line-height: 1.2;">
+                Student<br>Center
+            </span>
         </a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
@@ -12,29 +14,24 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto">
+            <ul class="navbar-nav me-auto ms-md-3">
                 <li class="nav-item">
-                    {{-- Pastikan route 'ukm-ormawa.index' ada di web.php --}}
-                    <a class="nav-link {{ request()->routeIs('ukm-ormawa.index') ? 'active fw-bold' : '' }}" 
+                    <a class="nav-link {{ request()->routeIs('ukm-ormawa.index') ? 'active fw-bold text-primary' : '' }}" 
                        href="{{ route('ukm-ormawa.index') }}">
                         Daftar UKM/Ormawa
                     </a>
                 </li>
-
+                
                 @auth
                     @if(Auth::user()->role === 'pengurus')
-                        <li class="nav-item">
-                            {{-- Cek apakah user sudah punya UKM yang dikelola --}}
+                        <li class="nav-item ms-md-2">
                             @if(Auth::user()->manages_ukm_ormawa_id)
-                                {{-- Jika sudah punya, arahkan ke Edit --}}
                                 <a class="nav-link fw-bold text-success" href="{{ route('pengurus.ukm-ormawa.edit') }}">
-                                    <i class="bi bi-gear-fill"></i> Kelola UKM/Ormawa
+                                    <i class="bi bi-gear-fill me-1"></i> Kelola Organisasi
                                 </a>
                             @else
-                                {{-- Jika belum punya, arahkan ke Buat Baru --}}
-                                {{-- Catatan: Menggunakan route 'pengurus.ukm-ormawa.store' sesuai web.php Anda untuk method GET --}}
-                                <a class="nav-link fw-bold text-success" href="{{ route('pengurus.ukm-ormawa.store') }}">
-                                    <i class="bi bi-plus-circle"></i> Buat UKM/Ormawa
+                                <a class="nav-link fw-bold text-success" href="{{ route('pengurus.ukm-ormawa.create') }}">
+                                    <i class="bi bi-plus-circle me-1"></i> Daftarkan Organisasi
                                 </a>
                             @endif
                         </li>
@@ -42,31 +39,35 @@
                 @endauth
             </ul>
 
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-center">
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
-                            <a class="nav-link btn btn-outline-danger me-2 px-3 text-danger border-0" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link fw-semibold px-3" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                     @endif
 
                     @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="nav-link btn btn-danger px-3 text-white" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="btn btn-primary px-4 rounded-pill btn-sm ms-2" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            {{ Auth::user()->name }} 
-                            <span class="badge bg-secondary ms-1">{{ Auth::user()->role }}</span>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold border" style="width: 35px; height: 35px;">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
+                            <div class="d-flex flex-column text-start" style="line-height: 1.1;">
+                                <span class="fw-semibold small">{{ Auth::user()->name }}</span>
+                                <span class="text-muted" style="font-size: 10px;">{{ ucfirst(Auth::user()->role) }}</span>
+                            </div>
                         </a>
 
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                        <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="bi bi-box-arrow-right me-2"></i> {{ __('Logout') }}
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
