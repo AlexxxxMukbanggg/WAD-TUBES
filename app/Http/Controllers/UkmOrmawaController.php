@@ -93,9 +93,10 @@ class UkmOrmawaController extends Controller
             $dataToCreate['misi'] = [];
         }
 
-        Auth::user()->createdUkmOrmawa()->create($dataToCreate);
+        $ukm = Auth::user()->createdUkmOrmawa()->create($dataToCreate);
 
-        return redirect()->route('home')->with('success', 'Profil UKM/Ormawa berhasil dibuat dan diajukan untuk verifikasi.');
+        return redirect()->route('ukm-ormawa.show', $ukm->slug)
+            ->with('success', 'Profil UKM/Ormawa berhasil dibuat.');
     }
 
     /**
@@ -179,7 +180,8 @@ class UkmOrmawaController extends Controller
                 
         $ukmOrmawa->update($dataToUpdate);
 
-        return redirect()->route('home')->with('success', 'Profil UKM/Ormawa berhasil diperbarui dan diajukan untuk verifikasi ulang.');
+        return redirect()->route('ukm-ormawa.show', $dataToUpdate['slug'])
+            ->with('success', 'Profil UKM/Ormawa berhasil diperbarui.');
     }
 
     /**

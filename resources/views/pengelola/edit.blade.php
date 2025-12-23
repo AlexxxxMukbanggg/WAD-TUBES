@@ -238,14 +238,58 @@
 
                 <div class="pt-4 pb-5">
                     <hr class="text-muted opacity-25 mb-4">
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    
+                    {{-- Container Tombol dengan Flexbox untuk memisahkan Kiri (Hapus) dan Kanan (Update) --}}
+                    <div class="d-flex justify-content-between align-items-center">
+                        
+                        {{-- Tombol Trigger Modal Hapus (Type="button" agar tidak mensubmit form update) --}}
+                        <button type="button" class="btn btn-outline-danger px-4 fw-bold rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="bi bi-trash me-2"></i> Hapus Organisasi
+                        </button>
+
+                        {{-- Tombol Submit Update Data --}}
                         <button type="submit" class="btn btn-warning text-white px-5 fw-bold shadow-lg rounded-pill">
                             <i class="bi bi-save me-2"></i> Update Data
                         </button>
                     </div>
                 </div>
 
-            </form>
+            </form> {{-- Penutup Form Update (Sudah ada di file asli) --}}
+        </div>
+    </div>
+</div>
+
+{{-- Modal Konfirmasi Hapus --}}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title fw-bold text-danger" id="deleteModalLabel">Hapus UKM/Ormawa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="mb-3">
+                    <span class="bg-danger bg-opacity-10 text-danger p-3 rounded-circle d-inline-block">
+                        <i class="bi bi-exclamation-triangle-fill fs-1"></i>
+                    </span>
+                </div>
+                <h5 class="fw-bold mb-2">Apakah Anda yakin?</h5>
+                <p class="text-muted mb-0">
+                    Tindakan ini akan menghapus data <strong>{{ $ukmOrmawa->nama }}</strong> secara permanen beserta logo dan banner terkait. Data yang dihapus tidak dapat dikembalikan.
+                </p>
+            </div>
+            <div class="modal-footer border-top-0 justify-content-center pb-4">
+                <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">Batal</button>
+                
+                {{-- Form Delete Sebenarnya --}}
+                <form action="{{ route('pengelola.ukm-ormawa.destroy', $ukmOrmawa->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">
+                        Ya, Hapus Permanen
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
