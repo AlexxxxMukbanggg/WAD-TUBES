@@ -42,7 +42,7 @@ class UkmOrmawaController extends Controller
     public function create()
     {
         if (Auth::user()->createdUkmOrmawa) {
-            return redirect()->route('pengelola.ukm-ormawa.edit')->with('info', 'Anda sudah mengelola UKM/Ormawa. Silakan edit data yang sudah ada.');
+            return redirect()->route('home')->with('info', 'Anda sudah mengelola UKM/Ormawa. Silakan edit data yang sudah ada.');
         }
         return view('pengelola.create');
     }
@@ -93,11 +93,10 @@ class UkmOrmawaController extends Controller
             $dataToCreate['misi'] = [];
         }
 
-        unset($dataToCreate['misi'], $dataToCreate['logo_url'], $dataToCreate['banner_url']);
+        // PERBAIKAN: Gunakan tanda kurung () setelah nama relasi
+        Auth::user()->createdUkmOrmawa()->create($dataToCreate);
 
-        Auth::user()->createdUkmOrmawa->create($dataToCreate);
-
-        return redirect()->route('pengelola.ukm-ormawa.edit')->with('success', 'Profil UKM/Ormawa berhasil dibuat dan diajukan untuk verifikasi.');
+        return redirect()->route('home')->with('success', 'Profil UKM/Ormawa berhasil dibuat dan diajukan untuk verifikasi.');
     }
 
     /**
@@ -114,10 +113,13 @@ class UkmOrmawaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit($id = null)
     {
+        $ukmOrmawa = Auth::user()->createdUkmOrmawa;
         
-        $ukmOrmawa = Auth::user()->createdUkmOrmawa->firstOrFail();
+        if (!$ukmOrmawa) {
+            return redirect()->route('pengelola.ukm-ormawa.create');
+        }
         
         return view('pengelola.edit', compact('ukmOrmawa'));
     }
@@ -138,8 +140,8 @@ class UkmOrmawaController extends Controller
             'misi' => 'required|string',
             'kontak_email' => 'required|email|max:255',
             'kontak_instagram' => 'required|string|max:255',
-            'logo_url' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:2048',
-            'banner_url' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+            'logo_url' => 'image|mimes:jpeg,png,jpg,webp,svg|max:2048',
+            'banner_url' => 'image|mimes:jpeg,png,jpg,webp,svg|max:4096',
             'id_provinsi' => 'nullable|string',
             'nama_provinsi' => 'nullable|string',
             'id_kabkota' => 'nullable|string',
@@ -180,7 +182,7 @@ class UkmOrmawaController extends Controller
         
         $ukmOrmawa->update($dataToUpdate);
 
-        return redirect()->route('pengelola.ukm-ormawa.edit')->with('success', 'Profil UKM/Ormawa berhasil diperbarui dan diajukan untuk verifikasi ulang.');
+        return redirect()->route('home')->with('success', 'Profil UKM/Ormawa berhasil diperbarui dan diajukan untuk verifikasi ulang.');
     }
 
     /**

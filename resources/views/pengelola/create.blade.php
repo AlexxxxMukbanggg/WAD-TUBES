@@ -19,6 +19,7 @@
             <form action="{{ route('pengelola.ukm-ormawa.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
+                {{-- Card Identitas Organisasi --}}
                 <div class="card mb-4 shadow-sm border-0">
                     <div class="card-header bg-white py-3 border-bottom-0">
                         <h5 class="mb-0 fw-bold text-dark border-start border-4 border-primary ps-3">Identitas Organisasi</h5>
@@ -75,6 +76,7 @@
                     </div>
                 </div>
 
+                {{-- Card Visi & Misi --}}
                 <div class="card mb-4 shadow-sm border-0">
                     <div class="card-header bg-white py-3 border-bottom-0">
                         <h5 class="mb-0 fw-bold text-dark border-start border-4 border-primary ps-3">Visi & Misi</h5>
@@ -104,6 +106,7 @@
                     </div>
                 </div>
 
+                {{-- Card Branding --}}
                 <div class="card mb-4 shadow-sm border-0">
                     <div class="card-header bg-white py-3 border-bottom-0">
                         <h5 class="mb-0 fw-bold text-dark border-start border-4 border-primary ps-3">Branding & Aset Visual</h5>
@@ -137,12 +140,14 @@
                     </div>
                 </div>
 
+                {{-- Card Kontak & Lokasi (UPDATED) --}}
                 <div class="card mb-4 shadow-sm border-0">
                     <div class="card-header bg-white py-3 border-bottom-0">
                         <h5 class="mb-0 fw-bold text-dark border-start border-4 border-primary ps-3">Kontak & Lokasi</h5>
                     </div>
                     <div class="card-body p-4">
                         <div class="row g-3">
+                            {{-- Kontak --}}
                             <div class="col-md-6">
                                 <label for="kontak_email" class="form-label fw-semibold">Email Resmi <span class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -169,11 +174,45 @@
                                 @enderror
                             </div>
 
+                            {{-- Wilayah API --}}
+                            <div class="col-12 mt-4 mb-2">
+                                <h6 class="fw-bold text-secondary border-bottom pb-2">Alamat Lengkap</h6>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="province_id" class="form-label fw-semibold">Provinsi</label>
+                                <select class="form-select @error('province_id') is-invalid @enderror" id="province_id" name="province_id" required>
+                                    <option value="" selected disabled>Pilih Provinsi...</option>
+                                    {{-- Data diisi via JS --}}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="regency_id" class="form-label fw-semibold">Kabupaten/Kota</label>
+                                <select class="form-select @error('regency_id') is-invalid @enderror" id="regency_id" name="regency_id" required disabled>
+                                    <option value="" selected disabled>Pilih Kabupaten/Kota...</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="district_id" class="form-label fw-semibold">Kecamatan</label>
+                                <select class="form-select @error('district_id') is-invalid @enderror" id="district_id" name="district_id" required disabled>
+                                    <option value="" selected disabled>Pilih Kecamatan...</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="village_id" class="form-label fw-semibold">Kelurahan/Desa</label>
+                                <select class="form-select @error('village_id') is-invalid @enderror" id="village_id" name="village_id" required disabled>
+                                    <option value="" selected disabled>Pilih Kelurahan/Desa...</option>
+                                </select>
+                            </div>
+
                             <div class="col-12">
-                                <label for="alamat_jalan" class="form-label fw-semibold">Alamat Sekretariat <span class="text-muted fw-normal">(Opsional)</span></label>
+                                <label for="alamat_jalan" class="form-label fw-semibold">Detail Jalan/Gedung <span class="text-muted fw-normal">(Opsional)</span></label>
                                 <textarea class="form-control @error('alamat_jalan') is-invalid @enderror" 
                                           id="alamat_jalan" name="alamat_jalan" rows="2" 
-                                          placeholder="Contoh: Gedung Student Center Lt. 2...">{{ old('alamat_jalan') }}</textarea>
+                                          placeholder="Contoh: Gedung Student Center Lt. 2, Jalan Telekomunikasi No. 1...">{{ old('alamat_jalan') }}</textarea>
                                 @error('alamat_jalan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -199,4 +238,76 @@
         </div>
     </div>
 </div>
+
+{{-- Script untuk Wilayah API --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const provinceSelect = document.getElementById('province_id');
+        const regencySelect = document.getElementById('regency_id');
+        const districtSelect = document.getElementById('district_id');
+        const villageSelect = document.getElementById('village_id');
+
+        // Fungsi Helper untuk Fetch
+        async function fetchData(url, targetSelect, placeholder) {
+            targetSelect.innerHTML = `<option value="" disabled selected>Loading...</option>`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                targetSelect.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    targetSelect.appendChild(option);
+                });
+                targetSelect.disabled = false;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                targetSelect.innerHTML = `<option value="" disabled selected>Gagal memuat data</option>`;
+            }
+        }
+
+        // 1. Load Provinces saat halaman dimuat
+        fetchData('/api/provinces', provinceSelect, 'Pilih Provinsi...');
+
+        // 2. Event Listener Provinsi -> Load Kota/Kab
+        provinceSelect.addEventListener('change', function() {
+            const provinceId = this.value;
+            regencySelect.disabled = true;
+            districtSelect.disabled = true;
+            villageSelect.disabled = true;
+            
+            districtSelect.innerHTML = '<option value="" disabled selected>Pilih Kecamatan...</option>';
+            villageSelect.innerHTML = '<option value="" disabled selected>Pilih Kelurahan/Desa...</option>';
+
+            if (provinceId) {
+                fetchData(`/api/regencies/${provinceId}`, regencySelect, 'Pilih Kabupaten/Kota...');
+            }
+        });
+
+        // 3. Event Listener Kota/Kab -> Load Kecamatan
+        regencySelect.addEventListener('change', function() {
+            const regencyId = this.value;
+            districtSelect.disabled = true;
+            villageSelect.disabled = true;
+            
+            villageSelect.innerHTML = '<option value="" disabled selected>Pilih Kelurahan/Desa...</option>';
+
+            if (regencyId) {
+                fetchData(`/api/districts/${regencyId}`, districtSelect, 'Pilih Kecamatan...');
+            }
+        });
+
+        // 4. Event Listener Kecamatan -> Load Kelurahan
+        districtSelect.addEventListener('change', function() {
+            const districtId = this.value;
+            villageSelect.disabled = true;
+
+            if (districtId) {
+                fetchData(`/api/villages/${districtId}`, villageSelect, 'Pilih Kelurahan/Desa...');
+            }
+        });
+    });
+</script>
 @endsection

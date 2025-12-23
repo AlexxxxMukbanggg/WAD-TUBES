@@ -6,44 +6,32 @@ use App\Models\UkmOrmawa;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class UkmOrmawaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Buat BEM (Ormawa) - Manual
-        $userBem = User::create([
-            'name' => 'Admin BEM KEMA',
-            'email' => 'bemkema@telkomuniversity.ac.id',
-            'password' => Hash::make('password123'),
-            'role' => 'pengelola',
-            'email_verified_at' => now(),
-        ]);
+        Storage::disk('public')->makeDirectory('ukm_logos');
+        Storage::disk('public')->makeDirectory('ukm_banners');
 
-        $bem = UkmOrmawa::create([
-            'user_id' => $userBem->id,
-            'nama' => 'BEM KEMA Tel-U',
-            'slug' => 'bem-kema-tel-u',
-            'tipe' => 'Ormawa',
-            'kategori' => 'Sosial',
-            'deskripsi' => 'Badan Eksekutif Mahasiswa Keluarga Mahasiswa Telkom University.',
-            'visi' => 'Menjadikan BEM KEMA sebagai poros pergerakan mahasiswa.',
-            'misi' => ['Membangun sinergi', 'Meningkatkan pelayanan', 'Mengabdi pada masyarakat'],
-            'kontak_email' => 'bem@telkomuniversity.ac.id',
-            'kontak_instagram' => '@bemkematelu',
-            'alamat_jalan' => 'Gedung SC Lt. 2, Telkom University',
-            'nama_provinsi' => 'JAWA BARAT',
-            'nama_kabkota' => 'KABUPATEN BANDUNG',
-        ]);
-
-        // Update relation di user (opsional jika logic aplikasi butuh update balik)
-        $userBem->update(['manages_ukm_ormawa_id' => $bem->id]);
+        $sourceLogoBadminton = public_path('images/Badminton.png');
+        $sourceBannerBadminton = public_path('images/badminton banner.jpeg'); 
 
 
+        // Fungsi helper kecil untuk copy file ke storage dan return path-nya
+        $storeImage = function ($sourcePath, $destinationFolder) {
+            if (File::exists($sourcePath)) {
+                $filename = time() . '_' . basename($sourcePath);
+                // Copy file dari sumber ke storage/app/public/...
+                Storage::disk('public')->put($destinationFolder . '/' . $filename, File::get($sourcePath));
+                return $destinationFolder . '/' . $filename;
+            }
+            return null; // Return null jika file sumber tidak ada
+        };
+
+        // --- BUAT UKM Badminton ---
         $userBadminton = User::create([
             'name' => 'Admin UKM Badminton',
             'email' => 'badminton@telkomuniversity.ac.id',
@@ -54,8 +42,8 @@ class UkmOrmawaSeeder extends Seeder
 
         $badminton = UkmOrmawa::create([
             'user_id' => $userBadminton->id,
-            'nama' => 'UKM Badminton',
-            'slug' => 'ukm-badminton',
+            'nama' => 'Badminton',
+            'slug' => 'badminton',
             'tipe' => 'UKM',
             'kategori' => 'Olahraga',
             'deskripsi' => 'Unit Kegiatan Mahasiswa bidang olahraga bulutangkis.',
@@ -64,15 +52,17 @@ class UkmOrmawaSeeder extends Seeder
             'kontak_email' => 'badminton@telkomuniversity.ac.id',
             'kontak_instagram' => '@ukmbadminton_telu',
             'alamat_jalan' => 'Gedung SC Lt. 1',
+
+             // SIMPAN GAMBAR DISINI (Menggunakan gambar yang sama sebagai contoh)
+            'logo_url' => $storeImage($sourceLogoBadminton, 'ukm_logos'),
+            'banner_url' => $storeImage($sourceBannerBadminton, 'ukm_banners'),
         ]);
         
         $userBadminton->update(['manages_ukm_ormawa_id' => $badminton->id]);
 
-        // Generate 10 UKM/Ormawa Random Tambahan menggunakan Factory
-        // Factory sudah otomatis membuat User Pengelola (lihat UkmOrmawaFactory)
+        // --- FACTORY (10 Random) ---
         $randomUkms = UkmOrmawa::factory()->count(10)->create();
 
-        // Loop untuk update kolom manages_ukm_ormawa_id di tabel users agar sinkron
         foreach ($randomUkms as $ukm) {
             $ukm->user->update(['manages_ukm_ormawa_id' => $ukm->id]);
         }

@@ -11,9 +11,16 @@
         @auth
             @if(Auth::user()->role === 'pengelola') 
                 <div class="col-md-6 text-md-end">
-                    <a href="{{ route('pengelola.ukm-ormawa.create') }}" class="btn btn-success">
-                        <i class="bi bi-plus-circle me-1"></i> Daftarkan UKM/Ormawa
-                    </a>
+                    @if(Auth::user()->createdUkmOrmawa)
+                        {{-- PERBAIKAN: Menambahkan parameter ID UKM ke dalam route --}}
+                        <a href="{{ route('pengelola.ukm-ormawa.edit', Auth::user()->createdUkmOrmawa->id) }}" class="btn btn-warning text-white shadow-sm">
+                            <i class="bi bi-pencil-square me-1"></i> Edit UKM/Ormawa
+                        </a>
+                    @else
+                        <a href="{{ route('pengelola.ukm-ormawa.create') }}" class="btn btn-success shadow-sm">
+                            <i class="bi bi-plus-circle me-1"></i> Daftarkan UKM/Ormawa
+                        </a>
+                    @endif
                 </div>
             @endif
         @endauth
@@ -109,7 +116,7 @@
                 <p class="text-muted mb-4" style="max-width: 500px;">
                     Kami tidak dapat menemukan UKM atau Ormawa yang cocok dengan kata kunci pencarian atau filter yang Anda pilih.
                 </p>
-                <a href="{{ route('ukm-ormawa.index') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                <a href="{{ route('home') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">
                     <i class="bi bi-arrow-repeat me-2"></i> Reset Filter Pencarian
                 </a>
             </div>

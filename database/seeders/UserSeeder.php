@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Admin Pengelola 1',
+            'name' => 'Admin Pengelola 2',
             'email' => 'pengelola2@telkomuniversity.ac.id',
             'password' => Hash::make('password123'),
             'role' => 'pengelola',

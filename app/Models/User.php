@@ -49,4 +49,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function createdUkmOrmawa()
+    {
+        return $this->hasOne(UkmOrmawa::class, 'user_id');
+    }
 }

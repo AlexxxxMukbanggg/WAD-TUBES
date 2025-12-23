@@ -24,9 +24,11 @@
                 
                 @auth
                     @if(Auth::user()->role === 'pengelola')
-                        @if(Auth::user()->manages_ukm_ormawa_id)
+                        {{-- PERBAIKAN: Menggunakan createdUkmOrmawa (relasi yang sudah diperbaiki di Model User) --}}
+                        @if(Auth::user()->createdUkmOrmawa)
                             <li class="nav-item ms-md-2">
-                                <a class="nav-link fw-bold text-success" href="{{ route('pengelola.ukm-ormawa.edit') }}">
+                                {{-- PERBAIKAN: Menambahkan parameter ID ke route --}}
+                                <a class="nav-link fw-bold text-success" href="{{ route('pengelola.ukm-ormawa.edit', Auth::user()->createdUkmOrmawa->id) }}">
                                     <i class="bi bi-gear-fill me-1"></i> Kelola Organisasi
                                 </a>
                             </li>
