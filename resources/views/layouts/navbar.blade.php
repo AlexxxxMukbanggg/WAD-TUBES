@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white sticky-top">
+<nav class="navbar navbar-expand-md navbar-light bg-white sticky-top shadow-sm">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/Dashboard') }}">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/dashboard') }}">
             <img src="{{ asset('images/737px-Logo_Telkom_University_potrait.png') }}" 
                  alt="Telkom University" 
                  height="40">
@@ -14,27 +14,23 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto ms-md-3">
+            <ul class="navbar-nav me-auto ms-md-3 align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('pengelola.ukm-ormawa.index') ? 'active fw-bold text-primary' : '' }}" 
-                       href="{{ route('pengelola.ukm-ormawa.index') }}">
+                    <a class="nav-link {{ request()->routeIs('home') ? 'active fw-bold text-primary' : '' }}" 
+                       href="{{ route('home') }}">
                         Daftar UKM/Ormawa
                     </a>
                 </li>
                 
                 @auth
                     @if(Auth::user()->role === 'pengelola')
-                        <li class="nav-item ms-md-2">
-                            @if(Auth::user()->manages_ukm_ormawa_id)
+                        @if(Auth::user()->manages_ukm_ormawa_id)
+                            <li class="nav-item ms-md-2">
                                 <a class="nav-link fw-bold text-success" href="{{ route('pengelola.ukm-ormawa.edit') }}">
                                     <i class="bi bi-gear-fill me-1"></i> Kelola Organisasi
                                 </a>
-                            @else
-                                <a class="nav-link fw-bold text-success" href="{{ route('pengelola.ukm-ormawa.create') }}">
-                                    <i class="bi bi-plus-circle me-1"></i> Daftarkan Organisasi
-                                </a>
-                            @endif
-                        </li>
+                            </li>
+                        @endif
                     @endif
                 @endauth
             </ul>

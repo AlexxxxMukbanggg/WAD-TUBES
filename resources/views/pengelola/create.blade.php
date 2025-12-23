@@ -11,7 +11,7 @@
                     </h2>
                     <p class="text-muted mb-0">Lengkapi data di bawah ini untuk mendaftarkan organisasi baru.</p>
                 </div>
-                <a href="{{ route('ukm-ormawa.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ route('home') }}" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left me-1"></i> Kembali
                 </a>
             </div>
@@ -182,14 +182,19 @@
                     </div>
                 </div>
 
-                <div class="card border-0 bg-transparent mb-5">
-                    <div class="card-body p-0 d-flex justify-content-end gap-2">
-                        <button type="reset" class="btn btn-light border px-4">Reset Form</button>
-                        <button type="submit" class="btn btn-primary px-5 fw-bold shadow-sm">
-                            <i class="bi bi-save me-2"></i> Simpan Data
+                <div class="pt-4 pb-5">
+                    <hr class="text-muted opacity-25 mb-4">
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="reset" class="btn btn-outline-secondary px-4 fw-semibold rounded-pill">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Form
+                        </button>
+                        <button type="submit" class="btn btn-primary px-5 fw-bold shadow-lg rounded-pill">
+                            <i class="bi bi-check-lg me-2"></i> Simpan & Daftarkan
                         </button>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>
