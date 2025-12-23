@@ -41,7 +41,7 @@ class UkmOrmawaController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->createdUkmOrmawa) {
+        if (Auth::user()->createdUkmOrmawa()) {
             return redirect()->route('home')->with('info', 'Anda sudah mengelola UKM/Ormawa. Silakan edit data yang sudah ada.');
         }
         return view('pengelola.create');
@@ -93,7 +93,6 @@ class UkmOrmawaController extends Controller
             $dataToCreate['misi'] = [];
         }
 
-        // PERBAIKAN: Gunakan tanda kurung () setelah nama relasi
         Auth::user()->createdUkmOrmawa()->create($dataToCreate);
 
         return redirect()->route('home')->with('success', 'Profil UKM/Ormawa berhasil dibuat dan diajukan untuk verifikasi.');
@@ -114,22 +113,22 @@ class UkmOrmawaController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id = null)
-    {
-        $ukmOrmawa = Auth::user()->createdUkmOrmawa;
-        
-        if (!$ukmOrmawa) {
-            return redirect()->route('pengelola.ukm-ormawa.create');
-        }
-        
-        return view('pengelola.edit', compact('ukmOrmawa'));
+{
+    $ukmOrmawa = Auth::user()->createdUkmOrmawa()->first();
+    
+    if (!$ukmOrmawa) {
+        return redirect()->route('pengelola.ukm-ormawa.create');
     }
+    
+    return view('pengelola.edit', compact('ukmOrmawa'));
+}
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request)
     {
-        $ukmOrmawa = Auth::user()->createdUkmOrmawa->firstOrFail();
+        $ukmOrmawa = Auth::user()->createdUkmOrmawa()->firstOrFail();
 
         $validated = $request->validate([
             'nama' => 'required|string|max:255|unique:ukm_ormawas,nama,' . $ukmOrmawa->id,
