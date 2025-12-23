@@ -44,14 +44,14 @@ class UkmOrmawa extends Model
         parent::boot();
         static::creating(function ($ukmOrmawa) {
             if (empty($ukmOrmawa->slug)) {
-                $ukmOrmawa->slug = Str::slug($ukmOrmawa->name);
+                $ukmOrmawa->slug = Str::slug($ukmOrmawa->nama);
             }
         });
         static::updating(function ($ukmOrmawa) {
-            if ($ukmOrmawa->isDirty('name')) {
-                $originalSlug = Str::slug($ukmOrmawa->getOriginal('name'));
+            if ($ukmOrmawa->isDirty('nama')) {
+                $originalSlug = Str::slug($ukmOrmawa->getOriginal('nama'));
                 if (empty($ukmOrmawa->getOriginal('slug')) || $ukmOrmawa->getOriginal('slug') === $originalSlug) {
-                    $ukmOrmawa->slug = Str::slug($ukmOrmawa->name);
+                    $ukmOrmawa->slug = Str::slug($ukmOrmawa->nama);
                 }
             }
         });

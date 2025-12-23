@@ -11,10 +11,6 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
-            $user = Auth::user();
-            if ($user->role === 'pengelola') {
-                return redirect()->route('home');
-            }
             return redirect()->route('home');
         }
         return view('auth.login');

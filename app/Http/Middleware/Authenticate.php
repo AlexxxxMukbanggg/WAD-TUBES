@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
 
-class Auththenticate
+class Authenticate
 {
     /**
      * Handle an incoming request.

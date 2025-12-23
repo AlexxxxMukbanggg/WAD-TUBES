@@ -176,9 +176,7 @@ class UkmOrmawaController extends Controller
         } else {
             $dataToUpdate['misi'] = [];
         }
-        
-        unset($dataToUpdate['misi'], $dataToUpdate['logo_url'], $dataToUpdate['banner_url']);
-        
+                
         $ukmOrmawa->update($dataToUpdate);
 
         return redirect()->route('home')->with('success', 'Profil UKM/Ormawa berhasil diperbarui dan diajukan untuk verifikasi ulang.');
