@@ -16,7 +16,7 @@
                 </a>
             </div>
 
-            <form action="{{ route('pengurus.ukm-ormawa.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('pengelola.ukm-ormawa.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="card mb-4 shadow-sm border-0">

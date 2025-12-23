@@ -5,11 +5,11 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="{{ route('ukm-ormawa.index') }}" class="text-decoration-none">Daftar UKM</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('pengelola.ukm-ormawa.index') }}" class="text-decoration-none">Daftar UKM</a></li>
                 <li class="breadcrumb-item active text-muted" aria-current="page">{{ $item->nama }}</li>
             </ol>
         </nav>
-        <a href="{{ route('ukm-ormawa.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+        <a href="{{ route('pengelola.ukm-ormawa.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
             <i class="bi bi-arrow-left me-1"></i> Kembali
         </a>
     </div>
@@ -54,7 +54,7 @@
                 @auth
                     @if(Auth::user()->manages_ukm_ormawa_id == $item->id)
                     <div class="mt-3 mt-md-0">
-                        <a href="{{ route('pengurus.ukm-ormawa.edit') }}" class="btn btn-primary rounded-pill px-4">
+                        <a href="{{ route('pengelola.ukm-ormawa.edit') }}" class="btn btn-primary rounded-pill px-4">
                             <i class="bi bi-pencil-square me-1"></i> Edit Profil
                         </a>
                     </div>

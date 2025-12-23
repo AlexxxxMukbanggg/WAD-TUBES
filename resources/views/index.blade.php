@@ -7,12 +7,15 @@
             <h2 class="fw-bold text-primary">Daftar Unit Kegiatan Mahasiswa (UKM) & Organisasi Kemahasiswaan</h2>
             <p class="text-muted">Temukan Unit Kegiatan Mahasiswa dan Organisasi Mahasiswa yang sesuai dengan minatmu.</p>
         </div>
+        
         @auth
-        <div class="col-md-6 text-md-end">
-            <a href="{{ route('pengelola.ukm-ormawa.create') }}" class="btn btn-success">
-                <i class="bi bi-plus-circle me-1"></i> Daftarkan UKM/Ormawa
-            </a>
-        </div>
+            @if(Auth::user()->role === 'pengelola') 
+                <div class="col-md-6 text-md-end">
+                    <a href="{{ route('pengelola.ukm-ormawa.create') }}" class="btn btn-success">
+                        <i class="bi bi-plus-circle me-1"></i> Daftarkan UKM/Ormawa
+                    </a>
+                </div>
+            @endif
         @endauth
     </div>
 
@@ -99,16 +102,13 @@
         @empty
         <div class="col-12" style="width: 100%;">
             <div class="d-flex flex-column justify-content-center align-items-center py-5 text-center" style="min-height: 60vh;">
-                
                 <div class="mb-3 text-secondary opacity-25">
                     <i class="bi bi-search" style="font-size: 5rem;"></i>
                 </div>
-
                 <h4 class="fw-bold text-secondary">Tidak ada data ditemukan</h4>
                 <p class="text-muted mb-4" style="max-width: 500px;">
                     Kami tidak dapat menemukan UKM atau Ormawa yang cocok dengan kata kunci pencarian atau filter yang Anda pilih.
                 </p>
-
                 <a href="{{ route('ukm-ormawa.index') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">
                     <i class="bi bi-arrow-repeat me-2"></i> Reset Filter Pencarian
                 </a>

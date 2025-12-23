@@ -13,7 +13,7 @@ class LoginController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role === 'pengelola') {
-                return redirect()->route('pengelola.dashboard');
+                return redirect()->route('home');
             }
             return redirect()->route('home');
         }
@@ -34,7 +34,7 @@ class LoginController extends Controller
             $user = Auth::user();
 
             if ($user->role === 'pengelola') {
-                return redirect()->intended(route('pengelola.dashboard'))
+                return redirect()->intended(route('home'))
                                 ->with('success', 'Anda telah berhasil login sebagai Pengelola!');
             } 
             return redirect()->intended(route('home'))
@@ -53,6 +53,6 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/')->with('success', 'Anda telah berhasil logout!');
+        return redirect('/Dashboard')->with('success', 'Anda telah berhasil logout!');
     }
 }
