@@ -6,9 +6,14 @@
     
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'WAD Tubes') }}</title>
+    <title>Student Center - Telkom University</title>
+
+    <link rel="icon" href="{{ asset('images/737px-Logo_Telkom_University_potrait.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ asset('images/737px-Logo_Telkom_University_potrait.png') }}" type="image/png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <style>
         body { background-color: #f8f9fa; }
@@ -24,14 +29,21 @@
             <div class="container">
                 @if(session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
+                        <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
 
                 @if(session('error'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session('error') }}
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                
+                @if(session('info'))
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                         <i class="bi bi-info-circle-fill me-2"></i>{{ session('info') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
