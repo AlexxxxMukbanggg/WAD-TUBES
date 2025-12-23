@@ -16,23 +16,24 @@ class UkmOrmawaController extends Controller
      */
     public function index(Request $request)
     {
-        $query = UkmOrmawa::where();
+    $query = UkmOrmawa::query(); 
 
-        if ($request->filled('search_name')) {
-            $query->where('name', 'like', '%' . $request->search_name . '%');
-        }
-        
-        if ($request->filled('filter_type')) {
-            $query->where('type', $request->filter_type);
-        }
+    if ($request->filled('search_name')) {
+        $query->where('nama', 'like', '%' . $request->search_name . '%');
+    }
+    
+    if ($request->filled('filter_type')) {
+        $query->where('tipe', $request->filter_type); 
+    }
 
-        if ($request->filled('filter_category')) {
-            $query->where('category', $request->filter_category);
-        }
-        
-        $ukmOrmawas = $query->orderBy('name')->paginate(9);
+    if ($request->filled('filter_category')) {
+        $query->where('kategori', $request->filter_category);
+    }
+    
+    $ukmOrmawas = $query->orderBy('nama')->paginate(9);
 
-        return view('ukm-ormawa.index', compact('ukmOrmawas'));
+    
+    return view('frontend.index', compact('ukmOrmawas'));
     }
 
     /**

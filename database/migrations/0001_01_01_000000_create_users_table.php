@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['mahasiswa', 'pengelola'])->default('mahasiswa');
-            $table->foreignId('manages_ukm_ormawa_id')->nullable()->constrained('ukm_ormawas')->onDelete('set null'); // Mereferensi ke tabel ukm_ormawas
+            $table->foreignId('manages_ukm_ormawa_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
