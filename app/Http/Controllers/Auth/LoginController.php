@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class LoginController extends Controller
+{
+    public function showLoginForm()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role === 'pengelola') {
+                return redirect()->route('pengelola.dashboard');
+            }
+            return redirect()->route('home');
+        }
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        $remember = $request->has('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+            $user = Auth::user();
+
+            if ($user->role === 'pengelola') {
+                return redirect()->intended(route('pengelola.dashboard'))
+                                ->with('success', 'Anda telah berhasil login sebagai Pengelola!');
+            } 
+            return redirect()->intended(route('home'))
+                            ->with('success', $remember
+                                ? 'Anda telah berhasil login dengan Remember Me aktif!'
+                                : 'Anda telah berhasil login!');
+        }
+
+        return back()->withErrors([
+            'email' => 'Email atau Password salah!',
+        ])->withInput($request->only('email', 'remember'));
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/')->with('success', 'Anda telah berhasil logout!');
+    }
+}
