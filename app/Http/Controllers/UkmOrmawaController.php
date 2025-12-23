@@ -41,7 +41,7 @@ class UkmOrmawaController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->createdUkmOrmawa()) {
+        if (Auth::user()->createdUkmOrmawa()->exists()) {
             return redirect()->route('home')->with('info', 'Anda sudah mengelola UKM/Ormawa. Silakan edit data yang sudah ada.');
         }
         return view('pengelola.create');

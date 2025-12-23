@@ -21,20 +21,6 @@
                         Daftar UKM/Ormawa
                     </a>
                 </li>
-                
-                @auth
-                    @if(Auth::user()->role === 'pengelola')
-                        {{-- PERBAIKAN: Menggunakan createdUkmOrmawa (relasi yang sudah diperbaiki di Model User) --}}
-                        @if(Auth::user()->createdUkmOrmawa)
-                            <li class="nav-item ms-md-2">
-                                {{-- PERBAIKAN: Menambahkan parameter ID ke route --}}
-                                <a class="nav-link fw-bold text-success" href="{{ route('pengelola.ukm-ormawa.edit', Auth::user()->createdUkmOrmawa->id) }}">
-                                    <i class="bi bi-gear-fill me-1"></i> Kelola Organisasi
-                                </a>
-                            </li>
-                        @endif
-                    @endif
-                @endauth
             </ul>
 
             <ul class="navbar-nav ms-auto align-items-center">

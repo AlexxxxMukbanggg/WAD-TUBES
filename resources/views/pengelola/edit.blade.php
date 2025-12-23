@@ -152,12 +152,13 @@
                     </div>
                     <div class="card-body p-4">
                         <div class="row g-3">
+                            {{-- Bagian Kontak (Sudah Oke) --}}
                             <div class="col-md-6">
                                 <label for="kontak_email" class="form-label fw-semibold">Email Resmi <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
                                     <input type="email" class="form-control @error('kontak_email') is-invalid @enderror" 
-                                           id="kontak_email" name="kontak_email" value="{{ old('kontak_email', $ukmOrmawa->kontak_email) }}" required>
+                                        id="kontak_email" name="kontak_email" value="{{ old('kontak_email', $ukmOrmawa->kontak_email) }}" required>
                                 </div>
                                 @error('kontak_email')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -169,7 +170,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-light text-muted">@</span>
                                     <input type="text" class="form-control @error('kontak_instagram') is-invalid @enderror" 
-                                           id="kontak_instagram" name="kontak_instagram" value="{{ old('kontak_instagram', $ukmOrmawa->kontak_instagram) }}" required>
+                                        id="kontak_instagram" name="kontak_instagram" value="{{ old('kontak_instagram', $ukmOrmawa->kontak_instagram) }}" required>
                                 </div>
                                 @error('kontak_instagram')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -181,36 +182,47 @@
                                 <h6 class="fw-bold text-secondary border-bottom pb-2">Alamat Lengkap</h6>
                             </div>
 
-                            {{-- Input Hidden untuk menyimpan ID wilayah lama agar JS bisa memuatnya --}}
-                            <input type="hidden" id="old_province_id" value="{{ old('province_id', $ukmOrmawa->id_provinsi) }}">
-                            <input type="hidden" id="old_regency_id" value="{{ old('regency_id', $ukmOrmawa->id_kabkota) }}">
-                            <input type="hidden" id="old_district_id" value="{{ old('district_id', $ukmOrmawa->id_kecamatan) }}">
-                            <input type="hidden" id="old_village_id" value="{{ old('village_id', $ukmOrmawa->id_keldesa) }}">
+                            {{-- PERBAIKAN: Tambahkan Hidden Input untuk Nama Wilayah --}}
+                            {{-- Default value diambil dari database agar jika tidak diubah, namanya tetap ada --}}
+                            <input type="hidden" name="nama_provinsi" id="input_nama_provinsi" value="{{ old('nama_provinsi', $ukmOrmawa->nama_provinsi) }}">
+                            <input type="hidden" name="nama_kabkota" id="input_nama_kabkota" value="{{ old('nama_kabkota', $ukmOrmawa->nama_kabkota) }}">
+                            <input type="hidden" name="nama_kecamatan" id="input_nama_kecamatan" value="{{ old('nama_kecamatan', $ukmOrmawa->nama_kecamatan) }}">
+                            <input type="hidden" name="nama_keldesa" id="input_nama_keldesa" value="{{ old('nama_keldesa', $ukmOrmawa->nama_keldesa) }}">
+
+                            {{-- Input Hidden untuk menyimpan ID wilayah lama (Logic Init JS) --}}
+                            <input type="hidden" id="old_id_provinsi" value="{{ old('id_provinsi', $ukmOrmawa->id_provinsi) }}">
+                            <input type="hidden" id="old_id_kabkota" value="{{ old('id_kabkota', $ukmOrmawa->id_kabkota) }}">
+                            <input type="hidden" id="old_id_kecamatan" value="{{ old('id_kecamatan', $ukmOrmawa->id_kecamatan) }}">
+                            <input type="hidden" id="old_id_keldesa" value="{{ old('id_keldesa', $ukmOrmawa->id_keldesa) }}">
 
                             <div class="col-md-6">
-                                <label for="province_id" class="form-label fw-semibold">Provinsi</label>
-                                <select class="form-select" id="province_id" name="province_id">
+                                <label for="id_provinsi" class="form-label fw-semibold">Provinsi</label>
+                                {{-- PERBAIKAN: name="id_provinsi" (sebelumnya province_id) --}}
+                                <select class="form-select" id="id_provinsi" name="id_provinsi">
                                     <option value="" selected disabled>Loading...</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label for="regency_id" class="form-label fw-semibold">Kabupaten/Kota</label>
-                                <select class="form-select" id="regency_id" name="regency_id" disabled>
+                                <label for="id_kabkota" class="form-label fw-semibold">Kabupaten/Kota</label>
+                                {{-- PERBAIKAN: name="id_kabkota" --}}
+                                <select class="form-select" id="id_kabkota" name="id_kabkota" disabled>
                                     <option value="" selected disabled>Pilih Kabupaten/Kota...</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label for="district_id" class="form-label fw-semibold">Kecamatan</label>
-                                <select class="form-select" id="district_id" name="district_id" disabled>
+                                <label for="id_kecamatan" class="form-label fw-semibold">Kecamatan</label>
+                                {{-- PERBAIKAN: name="id_kecamatan" --}}
+                                <select class="form-select" id="id_kecamatan" name="id_kecamatan" disabled>
                                     <option value="" selected disabled>Pilih Kecamatan...</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label for="village_id" class="form-label fw-semibold">Kelurahan/Desa</label>
-                                <select class="form-select" id="village_id" name="village_id" disabled>
+                                <label for="id_keldesa" class="form-label fw-semibold">Kelurahan/Desa</label>
+                                {{-- PERBAIKAN: name="id_keldesa" --}}
+                                <select class="form-select" id="id_keldesa" name="id_keldesa" disabled>
                                     <option value="" selected disabled>Pilih Kelurahan/Desa...</option>
                                 </select>
                             </div>
@@ -218,7 +230,7 @@
                             <div class="col-12">
                                 <label for="alamat_jalan" class="form-label fw-semibold">Detail Jalan/Gedung</label>
                                 <textarea class="form-control @error('alamat_jalan') is-invalid @enderror" 
-                                          id="alamat_jalan" name="alamat_jalan" rows="2">{{ old('alamat_jalan', $ukmOrmawa->alamat_jalan) }}</textarea>
+                                        id="alamat_jalan" name="alamat_jalan" rows="2">{{ old('alamat_jalan', $ukmOrmawa->alamat_jalan) }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -240,15 +252,23 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', async function() {
-        const provinceSelect = document.getElementById('province_id');
-        const regencySelect = document.getElementById('regency_id');
-        const districtSelect = document.getElementById('district_id');
-        const villageSelect = document.getElementById('village_id');
+        // Selector Element
+        const provinceSelect = document.getElementById('id_provinsi');
+        const regencySelect = document.getElementById('id_kabkota');
+        const districtSelect = document.getElementById('id_kecamatan');
+        const villageSelect = document.getElementById('id_keldesa');
 
-        const oldProv = document.getElementById('old_province_id').value;
-        const oldReg = document.getElementById('old_regency_id').value;
-        const oldDist = document.getElementById('old_district_id').value;
-        const oldVill = document.getElementById('old_village_id').value;
+        // Selector Hidden Input Names
+        const provinceNameInput = document.getElementById('input_nama_provinsi');
+        const regencyNameInput = document.getElementById('input_nama_kabkota');
+        const districtNameInput = document.getElementById('input_nama_kecamatan');
+        const villageNameInput = document.getElementById('input_nama_keldesa');
+
+        // Old Values (ID)
+        const oldProv = document.getElementById('old_id_provinsi').value;
+        const oldReg = document.getElementById('old_id_kabkota').value;
+        const oldDist = document.getElementById('old_id_kecamatan').value;
+        const oldVill = document.getElementById('old_id_keldesa').value;
 
         // Fungsi Helper Fetch
         async function fetchData(url, targetSelect, placeholder, selectedValue = null) {
@@ -262,6 +282,8 @@
                     const option = document.createElement('option');
                     option.value = item.id;
                     option.textContent = item.name;
+                    option.setAttribute('data-name', item.name); // Penting untuk ambil nama
+                    
                     if (selectedValue && String(item.id) === String(selectedValue)) {
                         option.selected = true;
                     }
@@ -274,54 +296,71 @@
             }
         }
 
-        // --- LOGIKA INIT DATA (EDIT MODE) ---
+        // Fungsi Update Hidden Input Name
+        function updateNameInput(selectElement, hiddenInput) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            if (selectedOption && selectedOption.getAttribute('data-name')) {
+                hiddenInput.value = selectedOption.getAttribute('data-name');
+            }
+        }
+
+        // --- 1. INIT DATA (Load data saat edit page dibuka) ---
         
-        // 1. Load Provinsi
         await fetchData('/api/provinces', provinceSelect, 'Pilih Provinsi...', oldProv);
 
-        // 2. Jika ada Provinsi terpilih, Load Kab/Kota
         if (oldProv) {
             await fetchData(`/api/regencies/${oldProv}`, regencySelect, 'Pilih Kabupaten/Kota...', oldReg);
         }
 
-        // 3. Jika ada Kab/Kota terpilih, Load Kecamatan
         if (oldReg) {
             await fetchData(`/api/districts/${oldReg}`, districtSelect, 'Pilih Kecamatan...', oldDist);
         }
 
-        // 4. Jika ada Kecamatan terpilih, Load Kelurahan
         if (oldDist) {
             await fetchData(`/api/villages/${oldDist}`, villageSelect, 'Pilih Kelurahan/Desa...', oldVill);
         }
 
-
-        // --- EVENT LISTENERS (Sama seperti create) ---
+        // --- 2. EVENT LISTENERS (Logika saat user mengubah pilihan) ---
 
         provinceSelect.addEventListener('change', function() {
+            updateNameInput(this, provinceNameInput); // Update Nama Provinsi
             const val = this.value;
-            regencySelect.innerHTML = '<option value="" disabled selected>Loading...</option>';
-            regencySelect.disabled = true;
-            districtSelect.innerHTML = '<option value="" disabled selected>Pilih Kecamatan...</option>';
-            districtSelect.disabled = true;
-            villageSelect.innerHTML = '<option value="" disabled selected>Pilih Kelurahan/Desa...</option>';
-            villageSelect.disabled = true;
+
+            // Reset bawahan
+            regencySelect.innerHTML = '<option value="" disabled selected>Loading...</option>'; regencySelect.disabled = true;
+            districtSelect.innerHTML = '<option value="" disabled selected>Pilih Kecamatan...</option>'; districtSelect.disabled = true;
+            villageSelect.innerHTML = '<option value="" disabled selected>Pilih Kelurahan/Desa...</option>'; villageSelect.disabled = true;
+            
+            // Kosongkan hidden input bawahan
+            regencyNameInput.value = ''; districtNameInput.value = ''; villageNameInput.value = '';
+
             if(val) fetchData(`/api/regencies/${val}`, regencySelect, 'Pilih Kabupaten/Kota...');
         });
 
         regencySelect.addEventListener('change', function() {
+            updateNameInput(this, regencyNameInput); // Update Nama Kota
             const val = this.value;
-            districtSelect.innerHTML = '<option value="" disabled selected>Loading...</option>';
-            districtSelect.disabled = true;
-            villageSelect.innerHTML = '<option value="" disabled selected>Pilih Kelurahan/Desa...</option>';
-            villageSelect.disabled = true;
+
+            districtSelect.innerHTML = '<option value="" disabled selected>Loading...</option>'; districtSelect.disabled = true;
+            villageSelect.innerHTML = '<option value="" disabled selected>Pilih Kelurahan/Desa...</option>'; villageSelect.disabled = true;
+            
+            districtNameInput.value = ''; villageNameInput.value = '';
+
             if(val) fetchData(`/api/districts/${val}`, districtSelect, 'Pilih Kecamatan...');
         });
 
         districtSelect.addEventListener('change', function() {
+            updateNameInput(this, districtNameInput); // Update Nama Kecamatan
             const val = this.value;
-            villageSelect.innerHTML = '<option value="" disabled selected>Loading...</option>';
-            villageSelect.disabled = true;
+
+            villageSelect.innerHTML = '<option value="" disabled selected>Loading...</option>'; villageSelect.disabled = true;
+            villageNameInput.value = '';
+
             if(val) fetchData(`/api/villages/${val}`, villageSelect, 'Pilih Kelurahan/Desa...');
+        });
+
+        villageSelect.addEventListener('change', function() {
+            updateNameInput(this, villageNameInput); // Update Nama Desa
         });
     });
 </script>
